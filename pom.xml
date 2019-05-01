@@ -8,5 +8,28 @@
     <artifactId>excelhelper</artifactId>
     <version>1.0</version>
 
+    <!--    versions-->
+    <properties>
+        <poi.version>3.9</poi.version>
+    </properties>
 
+    <dependencies>
+        <!-- poi office -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <!-- poi office end -->
+    </dependencies>
 </project>
