@@ -1,5 +1,6 @@
 package com.summer.excelhelper.importexcel;
 
+import com.summer.excelhelper.common.IExcelConvert;
 import com.summer.excelhelper.common.MappingInfoDefigner;
 import com.summer.excelhelper.pojo.MappingInfo;
 
@@ -27,6 +28,8 @@ public interface IImportExcel {
     IImportExcel setInputFileDir(String dir);
 
     IImportExcel initMapping(MappingInfoDefigner defigner);
+
+    IImportExcel setConvert(IExcelConvert convert);
 
     Map<Integer, MappingInfo> getMapping();
 

@@ -1,7 +1,9 @@
 package com.summer.excelhelper.importexcel.abs;
 
+import com.summer.excelhelper.common.IExcelConvert;
 import com.summer.excelhelper.common.MappingInfoDefigner;
 import com.summer.excelhelper.common.impl.ClassMappingInfoDefigner;
+import com.summer.excelhelper.common.impl.DefaultExcelConcert;
 import com.summer.excelhelper.importexcel.IImportExcel;
 import com.summer.excelhelper.pojo.MappingInfo;
 
@@ -32,6 +34,8 @@ public abstract class AbstractImportExcel implements IImportExcel {
     protected Integer tempRow = 0;
 
     protected Long endRow = Long.MAX_VALUE;
+
+    protected IExcelConvert convert = new DefaultExcelConcert();
 
     protected Class<? extends MappingInfoDefigner> defaultDefigner = ClassMappingInfoDefigner.class;
 
@@ -77,5 +81,10 @@ public abstract class AbstractImportExcel implements IImportExcel {
 
     public Map<Integer, MappingInfo> getMapping() {
         return mappingCollection;
+    }
+
+    public IImportExcel setConvert(IExcelConvert convert) {
+        this.convert = convert;
+        return this;
     }
 }

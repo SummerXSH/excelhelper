@@ -31,7 +31,6 @@ public class ClassMappingInfoDefigner implements MappingInfoDefigner {
         if (fields != null) {
             HashMap<Integer, MappingInfo> fieldResuld = doDefineByFields(fields);
             defineResult.putAll(fieldResuld);
-
         }
         Method[] methods = cla.getDeclaredMethods();
         if (methods != null) {

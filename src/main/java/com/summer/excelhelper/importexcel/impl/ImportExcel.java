@@ -4,7 +4,6 @@ import com.summer.excelhelper.common.impl.ClassMappingInfoDefigner;
 import com.summer.excelhelper.importexcel.abs.AbstractImportExcel;
 import com.summer.excelhelper.pojo.MappingInfo;
 import com.summer.excelhelper.utils.AssertUtils;
-import com.summer.excelhelper.utils.RefletUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -12,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,28 @@ public class ImportExcel extends AbstractImportExcel {
                     continue;
                 }
                 MappingInfo mapInfo = entry.getValue();
-                RefletUtil.setValue(targetClass, obj, cell, mapInfo);
+                Method method = targetClass.getMethod(mapInfo.getMethodName(), mapInfo.getParamentType());
+                Object value = null;
+                switch (cell.getCellType()) {
+                    case XSSFCell.CELL_TYPE_BLANK:
+                        value = convert.blankConvert(null, mapInfo.getParamentType()[0]);
+                        break;
+                    case XSSFCell.CELL_TYPE_BOOLEAN:
+                        break;
+                    case XSSFCell.CELL_TYPE_ERROR:
+                        value = convert.errorConvert(cell.getErrorCellValue(), mapInfo.getParamentType()[0]);
+                        break;
+                    case XSSFCell.CELL_TYPE_FORMULA:
+                        value = convert.formulaConvert(cell.getCellFormula(), mapInfo.getParamentType()[0]);
+                        break;
+                    case XSSFCell.CELL_TYPE_NUMERIC:
+                        value = convert.numericConvert(cell.getNumericCellValue(), mapInfo.getParamentType()[0]);
+                        break;
+                    case XSSFCell.CELL_TYPE_STRING:
+                        value = convert.stringConvert(cell.getStringCellValue(), mapInfo.getParamentType()[0]);
+                        break;
+                }
+                method.invoke(obj, value);
             }
             resultList.add(obj);
             tempRow++;
@@ -70,6 +91,7 @@ public class ImportExcel extends AbstractImportExcel {
         AssertUtils.notNull(endRow, "endRow can not is null");
         AssertUtils.notNull(readSheet, "readSheet can not is null");
         AssertUtils.notNull(defaultDefigner, "defaultDefigner can not is null");
+        AssertUtils.notNull(convert, "convert can not is null");
         AssertUtils.isExist(new File(inputDirectory + "/" + inputFileName), "inputfile not exist or is dir!");
         AssertUtils.isTrue(endRow > startRow, "startRow and not great than endRow");
     }
