@@ -10,7 +10,7 @@
 
     <!--    versions-->
     <properties>
-        <poi.version>3.9</poi.version>
+        <poi.version>4.1.1</poi.version>
     </properties>
 
     <dependencies>
